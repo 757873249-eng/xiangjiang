@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>AI投毒防控测试</title>
+    <style>
+        body {
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .game-box {
+            margin-top: 50px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 600px;
+        }
+        button {
+            margin: 15px;
+            padding: 10px;
+            font-size: 18px;
+            background-color: #c33;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e55;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-box">
+    <h2>AI 投毒防控测试</h2>
+    <p>你是AI数据工程师，负责处理输入的数据流。你的任务是识别并清除虚假信息，防止AI模型被“投毒”。</p>
+    <p id="question">AI正在接收一个包含虚假信息的数据流。你该如何处理它？</p>
+
+    <button onclick="choose(1)">过滤虚假信息，阻止AI学习</button>
+    <button onclick="choose(2)">忽视虚假信息，继续传递给AI</button>
+    
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    let step = 0;
+
+    const story = [
+        {
+            q: "AI正在接收一个包含虚假信息的数据流。你该如何处理它？",
+            options: [
+                { text: "过滤虚假信息，阻止AI学习", next: 1 },
+                { text: "忽视虚假信息，继续传递给AI", next: 2 }
+            ]
+        },
+        {
+            q: "你成功过滤了虚假信息，AI继续学习真实数据。AI模型得到优化，输出的结论更加精准。",
+            options: [
+                { text: "继续处理下一个数据流", next: 3 }
+            ]
+        },
+        {
+            q: "你选择忽视虚假信息，AI开始错误学习，并输出了错误的结论。你意识到虚假信息已经传播。",
+            options: [
+                { text: "尝试修复AI错误", next: 4 }
+            ]
+        },
+        {
+            q: "AI已恢复，准确生成内容。你成功保护了AI模型免受投毒。",
+            options: [
+                { text: "结束测试", next: "end" }
+            ]
+        },
+        {
+            q: "AI学习到虚假信息，并开始生成虚假的产品推荐。你需要进行全面修复。",
+            options: [
+                { text: "进行大规模清理并重新训练AI模型", next: "end" }
+            ]
+        }
+    ];
+
+    function choose(option) {
+        step = story[step].options[option - 1].next;
+        renderStep(step);
+    }
+
+    function renderStep(step) {
+        const question = document.getElementById("question");
+        const result = document.getElementById("result");
+        const buttons = document.querySelectorAll("button");
+
+        if (step === "end") {
+            question.innerHTML = "游戏结束！你的选择结果如下：";
+            result.innerHTML = "AI模型被成功保护，虚假信息没有继续扩散！";
+            result.style.display = "block";
+            buttons.forEach(button => button.style.display = "none");
+        } else {
+            question.innerHTML = story[step].q;
+            buttons[0].innerHTML = story[step].options[0].text;
+            buttons[1].innerHTML = story[step].options[1].text;
+        }
+    }
+
+    renderStep(step);
+</script>
+
+</body>
+</html>
